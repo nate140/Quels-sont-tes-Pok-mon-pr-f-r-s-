@@ -500,29 +500,37 @@ body {
     .stat-line  { font-size: 9px; }
     .progress-section { padding: 8px; margin: 8px 0; }
 
-    /* Grille 4 colonnes fixes, pas d'overflow */
+    /* Grille : toujours 4 colonnes, jamais plus jamais moins */
     .pokemon-grid {
         grid-template-columns: repeat(4, 1fr) !important;
         gap: 6px;
         margin: 10px 0;
     }
 
-    .pokemon-image { width: 44px; height: 44px; }
+    /* Les images s'adaptent à la taille réelle de la carte */
+    .pokemon-image {
+        width: 100% !important;
+        height: auto !important;
+        max-width: 70px;
+        aspect-ratio: 1;
+        object-fit: contain;
+    }
+
     .pokemon-name  { font-size: 6px; }
 
     /* Boutons compacts */
     .btn { padding: 8px 12px; font-size: 8px; }
     .controls { gap: 6px; margin: 10px 0; }
 
-    /* Favoris : grille 5 colonnes sur mobile pour économiser l'espace */
+    /* Favoris : 5 colonnes sur mobile */
     .favorites-section { max-height: none; }
     .favorites-list { grid-template-columns: repeat(5, 1fr); gap: 4px; }
 
-    /* Hall of Fame mobile */
-    .hof-back-row .hof-member img  { width: 90px;  height: 90px; }
-    .hof-front-row .hof-member img { width: 110px; height: 110px; }
-    .hof-team   { height: 200px; }
-    .hof-arena  { min-height: 210px; }
+    /* Hall of Fame mobile — sprites réduits pour voir les 6 */
+    .hof-back-row .hof-member img  { width: 75px;  height: 75px; }
+    .hof-front-row .hof-member img { width: 90px; height: 90px; }
+    .hof-team   { height: 170px; }
+    .hof-arena  { min-height: 180px; padding: 6px 0 0; }
     .hof-bottom-bar p      { font-size: 20px; }
     .hof-bottom-bar p span { font-size: 11px; }
     .hof-bench-member img  { width: 44px; height: 44px; }

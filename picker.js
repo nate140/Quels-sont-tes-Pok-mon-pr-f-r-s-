@@ -179,7 +179,11 @@ function displayBatch() {
         return;
     }
     const count = state.evaluating.length;
-    // Grille fixe — pas de resize, on injecte rien
+    // Sur mobile on plafonne à 4 colonnes, sur desktop 5
+    const isMobile = window.innerWidth <= 768;
+    const maxCols = isMobile ? 4 : 5;
+    const cols = Math.min(count, maxCols);
+    grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
 
     const placeholder = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect width='100' height='100' fill='%23c8d4a8'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-size='28' fill='%232d3a1e'%3E?%3C/text%3E%3C/svg%3E`;
 
