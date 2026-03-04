@@ -1,6 +1,6 @@
 :root {
-    --gb-screen: #e8e4d0;       /* blanc cassÃ© ivoire */
-    --gb-dark: #2d3a1e;         /* vert forÃªt profond */
+    --gb-screen: #e8e4d0;       /* blanc cassé ivoire */
+    --gb-dark: #2d3a1e;         /* vert forêt profond */
     --gb-mid: #5a6e3a;          /* vert neutre */
     --gb-light: #c8d4a8;        /* vert sauge clair */
     --gb-accent: #8fa86b;       /* vert moyen */
@@ -108,7 +108,7 @@ body {
     animation: slideUp 0.4s ease-out;
 }
 
-/* GRILLE FIXE â€” 5 colonnes, jamais de resize */
+/* GRILLE FIXE — 5 colonnes, jamais de resize */
 .pokemon-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
@@ -145,7 +145,7 @@ body {
 }
 
 .pokemon-card.selected::after {
-    content: 'â˜…';
+    content: '★';
     position: absolute;
     top: 4px;
     right: 6px;
@@ -259,7 +259,7 @@ body {
     min-width: 30px;
 }
 
-/* FAVORIS â€” pas de scroll, items se rÃ©duisent pour tenir */
+/* FAVORIS — pas de scroll, items se réduisent pour tenir */
 .favorites-section {
     background: rgba(143, 168, 107, 0.15);
     border: 2px solid var(--gb-dark);
@@ -462,7 +462,7 @@ body {
         background: var(--gb-screen);
     }
 
-    /* Supprime la coque dÃ©corative sur mobile */
+    /* Supprime la coque décorative sur mobile */
     .gameboy-shell {
         background: var(--gb-screen);
         padding: 0;
@@ -514,7 +514,7 @@ body {
     .btn { padding: 8px 12px; font-size: 8px; }
     .controls { gap: 6px; margin: 10px 0; }
 
-    /* Favoris : grille 5 colonnes sur mobile pour Ã©conomiser l'espace */
+    /* Favoris : grille 5 colonnes sur mobile pour économiser l'espace */
     .favorites-section { max-height: none; }
     .favorites-list { grid-template-columns: repeat(5, 1fr); gap: 4px; }
 
@@ -529,7 +529,7 @@ body {
 }
 
 /* ============================================================
-   CÃ‰LÃ‰BRATION FAVORI
+   CÉLÉBRATION FAVORI
    ============================================================ */
 .celebration-overlay {
     position: absolute;
@@ -557,7 +557,7 @@ body {
     align-items: center;
 }
 
-/* Photo du professeur â€” place ton image ici : ./professor-chen.png */
+/* Photo du professeur — place ton image ici : ./professor-chen.png */
 .celebration-professor {
     width: 48px;
     height: 48px;
@@ -657,7 +657,7 @@ body {
 }
 
 /* ============================================================
-   Ã‰CRAN DE FIN
+   ÉCRAN DE FIN
    ============================================================ */
 .results-screen {
     grid-column: 1 / -1;
@@ -751,7 +751,7 @@ body {
 }
 
 /* ============================================================
-   HALL OF FAME â€” GBA style (Rouge Feu / Vert Feuille)
+   HALL OF FAME — GBA style (Rouge Feu / Vert Feuille)
    ============================================================ */
 
 .hof-screen {
@@ -789,7 +789,7 @@ body {
     );
 }
 
-/* Confettis colorÃ©s pixelisÃ©s */
+/* Confettis colorés pixelisés */
 .hof-confetti {
     position: absolute;
     width: 7px;
@@ -804,7 +804,7 @@ body {
     100% { transform: translateY(380px) rotate(600deg); opacity: 0; }
 }
 
-/* Conteneur des 6 PokÃ©mon â€” layout absolu pour overlap */
+/* Conteneur des 6 Pokémon — layout absolu pour overlap */
 .hof-team {
     position: relative;
     width: 100%;
@@ -812,7 +812,7 @@ body {
     z-index: 2;
 }
 
-/* RangÃ©e arriÃ¨re #1 #2 #3 â€” grands, padding rÃ©duit pour se serrer */
+/* Rangée arrière #1 #2 #3 — grands, padding réduit pour se serrer */
 .hof-back-row {
     position: absolute;
     top: 0;
@@ -831,7 +831,7 @@ body {
     filter: drop-shadow(3px 6px 5px rgba(20,20,50,0.5));
 }
 
-/* RangÃ©e avant #4 #5 #6 â€” encore plus grands, overlap marquÃ© */
+/* Rangée avant #4 #5 #6 — encore plus grands, overlap marqué */
 .hof-front-row {
     position: absolute;
     bottom: 0;
@@ -864,7 +864,7 @@ body {
     to   { opacity: 1; transform: translateY(0)    scale(1); }
 }
 
-/* Barre infÃ©rieure gris foncÃ© */
+/* Barre inférieure gris foncé */
 .hof-bottom-bar {
     background: #4a4a5a;
     padding: 16px 20px;
@@ -886,7 +886,7 @@ body {
     letter-spacing: 2px;
 }
 
-/* Barre banc â€” comble toute la largeur */
+/* Barre banc — comble toute la largeur */
 .hof-bench-bar {
     width: 100%;
     background: #3a3a4a;
@@ -912,14 +912,14 @@ body {
     display: flex;
     flex: 1;
     align-items: flex-end;
-    justify-content: space-between; /* Ã©tale jusqu'aux bords */
+    justify-content: space-between; /* étale jusqu'aux bords */
 }
 
 .hof-bench-member {
     display: flex;
     align-items: flex-end;
     justify-content: center;
-    flex: 1; /* chaque item prend sa part Ã©gale */
+    flex: 1; /* chaque item prend sa part égale */
     opacity: 0;
     animation: hofAppear 0.4s ease forwards;
 }
@@ -936,7 +936,7 @@ body {
     margin-top: 14px;
 }
 
-/* Bouton rÃ©sultat anticipÃ© */
+/* Bouton résultat anticipé */
 .btn-early {
     background: var(--gb-mid);
     box-shadow: 0 4px 0 var(--gb-dark);
