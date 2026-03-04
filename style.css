@@ -1,0 +1,889 @@
+:root {
+    --gb-screen: #e8e4d0;       /* blanc cassé ivoire */
+    --gb-dark: #2d3a1e;         /* vert forêt profond */
+    --gb-mid: #5a6e3a;          /* vert neutre */
+    --gb-light: #c8d4a8;        /* vert sauge clair */
+    --gb-accent: #8fa86b;       /* vert moyen */
+    --gb-shadow: rgba(45, 58, 30, 0.25);
+    --gb-card-bg: rgba(200, 212, 168, 0.35);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'VT323', monospace;
+    background: linear-gradient(145deg, #3a3a3a 0%, #1a1a1a 100%);
+    min-height: 100vh;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--gb-dark);
+}
+
+.gameboy-shell {
+    background: linear-gradient(160deg, #a0a0a0 0%, #787878 50%, #686868 100%);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 
+        0 15px 50px rgba(0,0,0,0.6),
+        inset 0 2px 0 rgba(255,255,255,0.25),
+        inset 0 -3px 0 rgba(0,0,0,0.15);
+    max-width: 1020px;
+    width: 100%;
+}
+
+.screen-bezel {
+    background: linear-gradient(135deg, #222 0%, #111 100%);
+    padding: 22px;
+    border-radius: 14px;
+    box-shadow: 
+        inset 0 5px 12px rgba(0,0,0,0.7),
+        inset 0 1px 0 rgba(255,255,255,0.05);
+}
+
+.screen {
+    background: var(--gb-screen);
+    border: 2px solid #1a1a1a;
+    border-radius: 10px;
+    padding: 20px;
+    min-height: 600px;
+    box-shadow: 
+        inset 0 0 60px rgba(45, 58, 30, 0.08),
+        0 0 30px rgba(200, 212, 168, 0.15);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Scanlines subtiles */
+.screen::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 3px,
+        rgba(45, 58, 30, 0.025) 3px,
+        rgba(45, 58, 30, 0.025) 4px
+    );
+    pointer-events: none;
+    z-index: 10;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 20px;
+    animation: fadeIn 0.5s ease-in;
+    padding-bottom: 12px;
+    border-bottom: 2px dashed var(--gb-accent);
+}
+
+.header h1 {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 22px;
+    color: var(--gb-dark);
+    text-shadow: 2px 2px 0 var(--gb-light);
+    margin-bottom: 8px;
+    letter-spacing: 4px;
+}
+
+.header p {
+    font-size: 18px;
+    color: var(--gb-mid);
+}
+
+.main-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 18px;
+    margin-top: 16px;
+}
+
+.picking-section {
+    animation: slideUp 0.4s ease-out;
+}
+
+/* GRILLE FIXE — 5 colonnes, jamais de resize */
+.pokemon-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin: 16px 0;
+    min-height: 180px;
+}
+
+.pokemon-card {
+    background: var(--gb-card-bg);
+    border: 2px solid var(--gb-dark);
+    border-radius: 6px;
+    padding: 8px 4px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1;
+}
+
+.pokemon-card:hover {
+    background: var(--gb-light);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 0 var(--gb-accent);
+}
+
+.pokemon-card.selected {
+    background: var(--gb-dark);
+    border-color: var(--gb-dark);
+    animation: pulse 0.25s ease;
+}
+
+.pokemon-card.selected::after {
+    content: '★';
+    position: absolute;
+    top: 4px;
+    right: 6px;
+    font-size: 14px;
+    color: var(--gb-screen);
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.04); }
+}
+
+.pokemon-image {
+    width: 52px;
+    height: 52px;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    filter: contrast(1.05) saturate(0.95);
+}
+
+.pokemon-name {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 7px;
+    text-align: center;
+    word-break: break-word;
+    line-height: 1.3;
+    margin-top: 4px;
+    color: var(--gb-dark);
+}
+
+.pokemon-card.selected .pokemon-name {
+    color: var(--gb-screen);
+}
+
+/* Controls */
+.controls {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin: 16px 0;
+    flex-wrap: wrap;
+}
+
+.btn {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 11px;
+    padding: 11px 22px;
+    background: var(--gb-dark);
+    color: var(--gb-screen);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.1s ease;
+    box-shadow: 0 4px 0 var(--gb-mid);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn:hover:not(:disabled) {
+    background: var(--gb-mid);
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 var(--gb-mid);
+}
+
+.btn:active:not(:disabled) {
+    transform: translateY(4px);
+    box-shadow: none;
+}
+
+.btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+/* Progress */
+.progress-section {
+    background: rgba(143, 168, 107, 0.2);
+    border: 2px solid var(--gb-accent);
+    border-radius: 6px;
+    padding: 12px;
+    margin: 14px 0;
+}
+
+.stat-line {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 10px;
+    color: var(--gb-dark);
+    margin: 6px 0;
+}
+
+.progress-bar-container {
+    background: rgba(45, 58, 30, 0.2);
+    height: 24px;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 2px solid var(--gb-dark);
+    margin: 10px 0;
+}
+
+.progress-bar {
+    height: 100%;
+    background: var(--gb-dark);
+    transition: width 0.5s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 9px;
+    color: var(--gb-screen);
+    width: 0%;
+    min-width: 30px;
+}
+
+/* FAVORIS — pas de scroll, items se réduisent pour tenir */
+.favorites-section {
+    background: rgba(143, 168, 107, 0.15);
+    border: 2px solid var(--gb-dark);
+    border-radius: 6px;
+    padding: 12px;
+    animation: slideUp 0.5s ease-out;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.favorites-title {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 12px;
+    margin-bottom: 8px;
+    color: var(--gb-screen);
+    text-align: center;
+    padding: 8px;
+    background: var(--gb-dark);
+    border-radius: 4px;
+    letter-spacing: 2px;
+    flex-shrink: 0;
+}
+
+.favorites-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 5px;
+    flex: 1;
+    /* Les items s'auto-ajustent en hauteur pour tenir sans scroll */
+    grid-auto-rows: 1fr;
+}
+
+.empty-favorites {
+    text-align: center;
+    padding: 20px 10px;
+    font-size: 14px;
+    color: var(--gb-mid);
+    line-height: 1.6;
+    grid-column: 1 / -1;
+}
+
+/* Favori = GIF plein cadre, taille auto */
+.favorite-item {
+    position: relative;
+    background: var(--gb-dark);
+    border: 2px solid var(--gb-accent);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: popIn 0.3s ease-out;
+    overflow: hidden;
+    cursor: default;
+    min-height: 0; /* crucial pour que la grille compresse correctement */
+}
+
+.favorite-item::before {
+    content: attr(data-rank);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 7px;
+    color: var(--gb-screen);
+    background: rgba(45, 58, 30, 0.85);
+    padding: 2px 4px;
+    border-radius: 0 3px 0 0;
+    line-height: 1.4;
+    z-index: 2;
+}
+
+.favorite-item img {
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    filter: contrast(1.05) saturate(0.95);
+}
+
+/* Tooltip au hover */
+.favorite-item:hover .fav-tooltip {
+    display: block;
+}
+
+.fav-tooltip {
+    display: none;
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--gb-dark);
+    color: var(--gb-screen);
+    font-family: 'Press Start 2P', cursive;
+    font-size: 7px;
+    padding: 3px 6px;
+    border-radius: 3px;
+    white-space: nowrap;
+    z-index: 20;
+    margin-bottom: 4px;
+    pointer-events: none;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes popIn {
+    from { opacity: 0; transform: scale(0.7); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.empty-message {
+    text-align: center;
+    padding: 40px 20px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 11px;
+    color: var(--gb-dark);
+    line-height: 2;
+}
+
+/* Scrollbar */
+.favorites-section::-webkit-scrollbar { width: 6px; }
+.favorites-section::-webkit-scrollbar-track { background: rgba(45,58,30,0.1); border-radius: 3px; }
+.favorites-section::-webkit-scrollbar-thumb { background: var(--gb-accent); border-radius: 3px; }
+
+/* INTRO */
+.intro-overlay {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: var(--gb-screen);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    text-align: center;
+}
+
+.intro-content { animation: fadeIn 0.8s ease-out; }
+
+.pixel-title {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: var(--gb-dark);
+    letter-spacing: 3px;
+}
+
+.intro-text {
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    color: var(--gb-mid);
+    max-width: 500px;
+}
+
+.intro-text p { margin-bottom: 10px; }
+
+.pixel-hr {
+    border: none;
+    border-top: 2px dashed var(--gb-accent);
+    margin: 15px 0;
+}
+
+.blink {
+    animation: blinker 1.4s ease-in-out infinite;
+    color: var(--gb-dark);
+    font-family: 'Press Start 2P', cursive;
+    font-size: 13px;
+}
+
+@keyframes blinker { 50% { opacity: 0; } }
+
+.start-btn {
+    padding: 14px 28px !important;
+    font-size: 14px !important;
+    margin-top: 10px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .main-container { grid-template-columns: 1fr; }
+    .gameboy-shell { padding: 14px; }
+    .header h1 { font-size: 15px; }
+    .btn { padding: 9px 14px; font-size: 9px; }
+    /* Mobile : 4 colonnes max, scroll vertical */
+    .pokemon-grid {
+        grid-template-columns: repeat(4, 1fr) !important;
+    }
+    .favorite-item img { width: 75%; height: 75%; }
+}
+
+/* ============================================================
+   CÉLÉBRATION FAVORI
+   ============================================================ */
+.celebration-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 56, 15, 0.85);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.2s ease;
+    overflow: hidden;
+}
+
+.celebration-box {
+    background: var(--gb-screen);
+    border: 4px solid var(--gb-dark);
+    border-radius: 10px;
+    padding: 20px 24px;
+    text-align: center;
+    animation: celebPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Photo du professeur — place ton image ici : ./professor-chen.png */
+.celebration-professor {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 2px solid var(--gb-dark);
+    object-fit: cover;
+    image-rendering: pixelated;
+    margin-bottom: 6px;
+    background: var(--gb-light);
+    /* Placeholder visible si l'image manque */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.celebration-professor-placeholder {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 2px solid var(--gb-dark);
+    background: var(--gb-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    margin-bottom: 6px;
+    flex-shrink: 0;
+}
+
+@keyframes celebPop {
+    from { transform: scale(0.5); opacity: 0; }
+    to   { transform: scale(1);   opacity: 1; }
+}
+
+.celebration-rank {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 28px;
+    color: var(--gb-dark);
+    line-height: 1;
+}
+
+.celebration-label {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 11px;
+    color: var(--gb-mid);
+    margin: 6px 0 12px;
+    letter-spacing: 2px;
+}
+
+.celebration-img {
+    width: 96px;
+    height: 96px;
+    image-rendering: pixelated;
+    animation: celebBounce 0.6s ease infinite alternate;
+}
+
+@keyframes celebBounce {
+    from { transform: translateY(0); }
+    to   { transform: translateY(-6px); }
+}
+
+.celebration-name {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 13px;
+    color: var(--gb-dark);
+    margin: 10px 0 8px;
+}
+
+.celebration-quote {
+    font-size: 16px;
+    color: var(--gb-mid);
+    font-style: italic;
+    max-width: 240px;
+    line-height: 1.4;
+}
+
+.celebration-author {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 9px;
+    color: var(--gb-accent);
+    margin-top: 6px;
+}
+
+.confetti-pixel {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    top: -10px;
+    animation: confettiFall 1.2s ease-in forwards;
+    z-index: 1;
+}
+
+@keyframes confettiFall {
+    0%   { transform: translateY(0) rotate(0deg);       opacity: 1; }
+    100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+}
+
+/* ============================================================
+   ÉCRAN DE FIN
+   ============================================================ */
+.results-screen {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 10px;
+    animation: fadeIn 0.6s ease;
+}
+
+.results-title {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 16px;
+    color: var(--gb-dark);
+    text-shadow: 2px 2px 0 var(--gb-light);
+    margin-bottom: 6px;
+    letter-spacing: 2px;
+}
+
+.results-subtitle {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 10px;
+    color: var(--gb-mid);
+    margin-bottom: 20px;
+}
+
+.results-team {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.result-pokemon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--gb-dark);
+    border: 2px solid var(--gb-accent);
+    border-radius: 8px;
+    padding: 8px 6px;
+    width: 80px;
+    animation: popIn 0.4s ease-out both;
+}
+
+.result-pokemon:nth-child(1)  { animation-delay: 0.05s; }
+.result-pokemon:nth-child(2)  { animation-delay: 0.10s; }
+.result-pokemon:nth-child(3)  { animation-delay: 0.15s; }
+.result-pokemon:nth-child(4)  { animation-delay: 0.20s; }
+.result-pokemon:nth-child(5)  { animation-delay: 0.25s; }
+.result-pokemon:nth-child(6)  { animation-delay: 0.30s; }
+.result-pokemon:nth-child(7)  { animation-delay: 0.35s; }
+.result-pokemon:nth-child(8)  { animation-delay: 0.40s; }
+.result-pokemon:nth-child(9)  { animation-delay: 0.45s; }
+.result-pokemon:nth-child(10) { animation-delay: 0.50s; }
+
+.result-rank {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 8px;
+    color: var(--gb-accent);
+    margin-bottom: 4px;
+}
+
+.result-pokemon img {
+    width: 56px;
+    height: 56px;
+    image-rendering: pixelated;
+}
+
+.result-name {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 6px;
+    color: var(--gb-screen);
+    text-align: center;
+    margin-top: 4px;
+    line-height: 1.4;
+    word-break: break-word;
+}
+
+.results-quote {
+    font-size: 16px;
+    color: var(--gb-mid);
+    line-height: 1.8;
+    margin: 16px auto;
+    max-width: 400px;
+}
+
+.results-quote span {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 9px;
+    color: var(--gb-accent);
+}
+
+/* ============================================================
+   HALL OF FAME — GBA style (Rouge Feu / Vert Feuille)
+   ============================================================ */
+
+.hof-screen {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    animation: fadeIn 0.5s ease;
+}
+
+.hof-frame {
+    width: 100%;
+    border: 3px solid #2a2a3a;
+    border-radius: 4px 4px 0 0;
+    overflow: hidden;
+}
+
+/* Fond violet GBA avec scanlines horizontales */
+.hof-arena {
+    position: relative;
+    overflow: hidden;
+    padding: 10px 0 0;
+    min-height: 340px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    background-color: #8888b8;
+    background-image: repeating-linear-gradient(
+        0deg,
+        rgba(255,255,255,0.045) 0px,
+        rgba(255,255,255,0.045) 1px,
+        transparent 1px,
+        transparent 4px
+    );
+}
+
+/* Confettis colorés pixelisés */
+.hof-confetti {
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    top: -8px;
+    z-index: 1;
+    animation: hofConfettiFall linear infinite;
+}
+@keyframes hofConfettiFall {
+    0%   { transform: translateY(0) rotate(0deg);       opacity: 1; }
+    85%  { opacity: 1; }
+    100% { transform: translateY(380px) rotate(600deg); opacity: 0; }
+}
+
+/* Conteneur des 6 Pokémon — layout absolu pour overlap */
+.hof-team {
+    position: relative;
+    width: 100%;
+    height: 320px;
+    z-index: 2;
+}
+
+/* Rangée arrière #1 #2 #3 — grands, padding réduit pour se serrer */
+.hof-back-row {
+    position: absolute;
+    top: 0;
+    left: 0; right: 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    padding: 0;
+}
+
+.hof-back-row .hof-member img {
+    width: 150px;
+    height: 150px;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    filter: drop-shadow(3px 6px 5px rgba(20,20,50,0.5));
+}
+
+/* Rangée avant #4 #5 #6 — encore plus grands, overlap marqué */
+.hof-front-row {
+    position: absolute;
+    bottom: 0;
+    left: 0; right: 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    padding: 0 10px;
+}
+
+.hof-front-row .hof-member img {
+    width: 175px;
+    height: 175px;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    filter: drop-shadow(3px 8px 7px rgba(20,20,50,0.55));
+}
+
+/* Apparition en fondu */
+.hof-member {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    opacity: 0;
+    animation: hofAppear 0.5s ease forwards;
+}
+
+@keyframes hofAppear {
+    from { opacity: 0; transform: translateY(18px) scale(0.88); }
+    to   { opacity: 1; transform: translateY(0)    scale(1); }
+}
+
+/* Barre inférieure gris foncé */
+.hof-bottom-bar {
+    background: #4a4a5a;
+    padding: 16px 20px;
+    text-align: center;
+    border-top: 2px solid #2a2a3a;
+}
+
+.hof-bottom-bar p {
+    font-family: 'VT323', monospace;
+    font-size: 30px;
+    color: #ffffff;
+    letter-spacing: 1px;
+    line-height: 1.2;
+}
+
+.hof-bottom-bar p span {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 16px;
+    letter-spacing: 2px;
+}
+
+/* Barre banc — comble toute la largeur */
+.hof-bench-bar {
+    width: 100%;
+    background: #3a3a4a;
+    border: 3px solid #2a2a3a;
+    border-top: none;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-sizing: border-box;
+}
+
+.hof-bench-label {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 7px;
+    color: #aaaacc;
+    letter-spacing: 2px;
+    flex-shrink: 0;
+    writing-mode: vertical-rl;
+}
+
+.hof-bench-row {
+    display: flex;
+    flex: 1;
+    align-items: flex-end;
+    justify-content: space-between; /* étale jusqu'aux bords */
+}
+
+.hof-bench-member {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    flex: 1; /* chaque item prend sa part égale */
+    opacity: 0;
+    animation: hofAppear 0.4s ease forwards;
+}
+
+.hof-bench-member img {
+    width: 64px;
+    height: 64px;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    filter: drop-shadow(1px 2px 3px rgba(0,0,0,0.4));
+}
+
+.hof-restart-btn {
+    margin-top: 14px;
+}
+
+/* Bouton résultat anticipé */
+.btn-early {
+    background: var(--gb-mid);
+    box-shadow: 0 4px 0 var(--gb-dark);
+    animation: pulseEarly 2s ease-in-out infinite;
+}
+
+@keyframes pulseEarly {
+    0%, 100% { box-shadow: 0 4px 0 var(--gb-dark); }
+    50%       { box-shadow: 0 4px 10px var(--gb-accent), 0 4px 0 var(--gb-dark); }
+}
+
+.btn-early:hover:not(:disabled) {
+    background: var(--gb-dark);
+}
