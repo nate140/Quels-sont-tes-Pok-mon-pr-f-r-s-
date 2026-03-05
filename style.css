@@ -1159,3 +1159,33 @@ body {
     justify-content: center;
     margin-top: 10px;
 }
+
+/* Texte d'aide 1er tour */
+.hint-text {
+    font-family: 'VT323', monospace;
+    font-size: 15px;
+    color: var(--gb-mid);
+    background: rgba(200, 212, 168, 0.4);
+    border: 1px dashed var(--gb-accent);
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin-bottom: 10px;
+    text-align: center;
+    line-height: 1.4;
+}
+
+/* Bouton derniers résultats */
+.hof-btn {
+    background: #4a4a5a;
+    box-shadow: 0 4px 0 #2a2a3a;
+    color: #ffffff;
+    font-size: 9px;
+}
+
+.hof-btn:hover {
+    background: #2a2a3a;
+}
+
+@media (max-width: 768px) {
+    .hint-text { font-size: 13px; padding: 6px 10px; }
+}

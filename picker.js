@@ -12,7 +12,8 @@ let state = {
     survived: [],
     evaluating: [],
     favorites: [],
-    everPicked: []   // IDs ayant été sélectionnés au moins une fois
+    everPicked: [],
+    isFirstRound: true   // true tant qu'on n'a pas complété un premier tour complet
 };
 let history = [];
 let selectedIds = new Set();
@@ -71,13 +72,27 @@ async function init() {
 
         const saved = loadProgress();
         if (saved && saved.state && saved.state.favorites && saved.state.favorites.length > 0) {
-            // Affiche le bouton REPRENDRE sur l'intro
             const resumeBtn = document.getElementById('resumeBtn');
             if (resumeBtn) {
                 resumeBtn.style.display = 'inline-block';
                 const pct = Math.round(((allPokemon.length - saved.state.current.length - saved.state.survived.length - saved.state.evaluating.length) / allPokemon.length) * 100);
                 resumeBtn.textContent = `▶ REPRENDRE (${pct}%)`;
                 resumeBtn.addEventListener('click', () => resumeGame(saved.state));
+            }
+        }
+
+        // Bouton "Voir les derniers résultats" si un HOF est sauvegardé
+        const hof = loadHOF();
+        if (hof && hof.favorites && hof.favorites.length >= 6) {
+            const hofBtn = document.getElementById('hofBtn');
+            if (hofBtn) {
+                hofBtn.style.display = 'inline-block';
+                hofBtn.addEventListener('click', () => {
+                    state.favorites = hof.favorites;
+                    const intro = document.getElementById('introScreen');
+                    intro.style.display = 'none';
+                    endGame();
+                });
             }
         }
 
@@ -130,13 +145,11 @@ async function loadPokemonData() {
 // SAUVEGARDE LOCALE
 // ============================================================
 const SAVE_KEY = 'pokedex_save';
+const HOF_KEY  = 'pokedex_hof';
 
 function saveProgress() {
     try {
-        localStorage.setItem(SAVE_KEY, JSON.stringify({
-            state,
-            timestamp: Date.now()
-        }));
+        localStorage.setItem(SAVE_KEY, JSON.stringify({ state, timestamp: Date.now() }));
     } catch(e) { console.warn('Sauvegarde impossible', e); }
 }
 
@@ -150,6 +163,20 @@ function loadProgress() {
 
 function clearProgress() {
     localStorage.removeItem(SAVE_KEY);
+}
+
+function saveHOF(favorites) {
+    try {
+        localStorage.setItem(HOF_KEY, JSON.stringify({ favorites, timestamp: Date.now() }));
+    } catch(e) {}
+}
+
+function loadHOF() {
+    try {
+        const raw = localStorage.getItem(HOF_KEY);
+        if (!raw) return null;
+        return JSON.parse(raw);
+    } catch(e) { return null; }
 }
 
 function confirmRestart() {
@@ -238,6 +265,7 @@ function loadNextBatch() {
         } else if (state.survived.length > 1) {
             state.current = state.survived;
             state.survived = [];
+            state.isFirstRound = false;   // premier tour terminé
             shuffleArray(state.current);
         } else {
             endGame();
@@ -351,6 +379,10 @@ function updateUI() {
     document.getElementById('progressText').textContent = Math.round(percentage) + '%';
     document.getElementById('undoBtn').disabled = history.length === 0;
 
+    // Texte d'aide — visible seulement au 1er tour
+    const hint = document.getElementById('hintText');
+    if (hint) hint.style.display = state.isFirstRound ? 'block' : 'none';
+
     // Bouton résultat anticipé dès 6 favoris
     const earlyBtn = document.getElementById('earlyResultBtn');
     if (state.favorites.length >= 6 && state.favorites.length < MAX_FAVORITES) {
@@ -456,7 +488,8 @@ function showFavoriteCelebration(pokemon, rank) {
 // HALL OF FAME
 // ============================================================
 function endGame() {
-    // Mélodie de victoire
+    // Sauvegarde le résultat final puis efface la progression en cours
+    saveHOF(state.favorites);
     clearProgress();
     [392, 440, 494, 523, 587, 659, 784, 1047].forEach((note, i) => {
         setTimeout(() => playTone(note, 0.18, 'square', 0.15), i * 110);
