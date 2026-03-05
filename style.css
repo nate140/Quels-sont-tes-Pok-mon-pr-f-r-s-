@@ -485,6 +485,8 @@ body {
         padding: 12px;
         min-height: 100svh;
         box-shadow: none;
+        overflow-x: hidden;
+        width: 100%;
     }
 
     /* Layout vertical */
@@ -500,11 +502,13 @@ body {
     .stat-line  { font-size: 9px; }
     .progress-section { padding: 8px; margin: 8px 0; }
 
-    /* Grille : toujours 4 colonnes, jamais plus jamais moins */
+    /* Grille : 4 colonnes strictes, aucun débordement possible */
     .pokemon-grid {
         grid-template-columns: repeat(4, 1fr) !important;
         gap: 6px;
         margin: 10px 0;
+        overflow: hidden;
+        width: 100%;
     }
 
     /* Les images s'adaptent à la taille réelle de la carte */
