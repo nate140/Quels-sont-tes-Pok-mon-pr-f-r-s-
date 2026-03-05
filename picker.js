@@ -372,6 +372,7 @@ function endGame() {
         setTimeout(() => playTone(note, 0.18, 'square', 0.15), i * 110);
     });
 
+    const isMobile = window.innerWidth <= 768;
     const ph = (size) => `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='${size}' height='${size}'%3E%3Crect width='${size}' height='${size}' fill='%238888b8'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' font-size='${Math.floor(size*0.4)}' fill='%23ffffff'%3E?%3C/text%3E%3C/svg%3E`;
     const favs = state.favorites.slice(0, MAX_FAVORITES);
 
@@ -387,30 +388,47 @@ function endGame() {
         confettiHTML += `<div class="hof-confetti" style="left:${x}%;animation-delay:${delay}s;animation-duration:${dur}s;background:${color};${wide}"></div>`;
     }
 
-    // Rangée arrière : pokémon 1-3
-    const backRow = favs.slice(0, 3).map((id, i) => {
-        const p = allPokemon.find(pk => pk.id === id);
-        if (!p) return '';
-        return `<div class="hof-member" style="animation-delay:${0.3 + i * 0.25}s">
-            <img src="${p.image}" alt="${p.name}" onerror="this.src='${ph(120)}'">
+    // Sur mobile : grid simple 3x2, tailles en vw
+    // Sur desktop : layout absolu avec overlap
+    let teamHTML;
+    if (isMobile) {
+        const imgSize = Math.floor(window.innerWidth / 5); // ~20vw en px réels
+        const allSix = favs.slice(0, 6).map((id, i) => {
+            const p = allPokemon.find(pk => pk.id === id);
+            if (!p) return '';
+            return `<div class="hof-member" style="animation-delay:${0.3 + i * 0.2}s;display:flex;justify-content:center;align-items:flex-end;padding:2px;">
+                <img src="${p.image}" alt="${p.name}" style="width:${imgSize}px;height:${imgSize}px;image-rendering:pixelated;" onerror="this.src='${ph(imgSize)}'">
+            </div>`;
+        }).join('');
+        teamHTML = `<div style="display:grid;grid-template-columns:repeat(3,1fr);width:100%;gap:0;">${allSix}</div>`;
+    } else {
+        const backRow = favs.slice(0, 3).map((id, i) => {
+            const p = allPokemon.find(pk => pk.id === id);
+            if (!p) return '';
+            return `<div class="hof-member" style="animation-delay:${0.3 + i * 0.25}s">
+                <img src="${p.image}" alt="${p.name}" onerror="this.src='${ph(120)}'">
+            </div>`;
+        }).join('');
+        const frontRow = favs.slice(3, 6).map((id, i) => {
+            const p = allPokemon.find(pk => pk.id === id);
+            if (!p) return '';
+            return `<div class="hof-member" style="animation-delay:${1.1 + i * 0.2}s">
+                <img src="${p.image}" alt="${p.name}" onerror="this.src='${ph(140)}'">
+            </div>`;
+        }).join('');
+        teamHTML = `<div class="hof-team">
+            <div class="hof-back-row">${backRow}</div>
+            <div class="hof-front-row">${frontRow}</div>
         </div>`;
-    }).join('');
-
-    // Rangée avant : pokémon 4-6
-    const frontRow = favs.slice(3, 6).map((id, i) => {
-        const p = allPokemon.find(pk => pk.id === id);
-        if (!p) return '';
-        return `<div class="hof-member" style="animation-delay:${1.1 + i * 0.2}s">
-            <img src="${p.image}" alt="${p.name}" onerror="this.src='${ph(140)}'">
-        </div>`;
-    }).join('');
+    }
 
     // Banc : pokémon 7-12
+    const benchImgSize = isMobile ? Math.floor(window.innerWidth / 8) : 64;
     const bench = favs.slice(6, 12).map((id, i) => {
         const p = allPokemon.find(pk => pk.id === id);
         if (!p) return '';
         return `<div class="hof-bench-member" style="animation-delay:${1.7 + i * 0.15}s">
-            <img src="${p.image}" alt="${p.name}" onerror="this.src='${ph(56)}'">
+            <img src="${p.image}" alt="${p.name}" style="${isMobile ? `width:${benchImgSize}px;height:${benchImgSize}px;image-rendering:pixelated;` : ''}" onerror="this.src='${ph(benchImgSize)}'">
         </div>`;
     }).join('');
 
@@ -425,10 +443,7 @@ function endGame() {
             <div class="hof-frame">
                 <div class="hof-arena">
                     ${confettiHTML}
-                    <div class="hof-team">
-                        <div class="hof-back-row">${backRow}</div>
-                        <div class="hof-front-row">${frontRow}</div>
-                    </div>
+                    ${teamHTML}
                 </div>
                 <div class="hof-bottom-bar">
                     <p>Welcome to the <span>HALL OF FAME!</span></p>
