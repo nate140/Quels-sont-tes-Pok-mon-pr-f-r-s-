@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quels sont tes Pokémon préférés ? Crée ton équipe idéale !</title>
+    <title>Mon Pokédex Favori - Game Boy Style</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -15,18 +15,19 @@
     <div class="intro-content">
         <div class="intro-trainer-wrap">
             <img src="./nate.png" alt="Nate" class="intro-trainer">
-            <div class="intro-trainer-name">NATE</div>
+            <div class="intro-trainer-name">DRESSEUR NATE</div>
         </div>
-        <h2 class="pixel-title">BIENVENUE JEUNE DRESSEUR !</h2>
+        <h2 class="pixel-title">BIENVENUE</h2>
         <div class="intro-text">
-            <p>Ce mini-jeu est un hommage aux 30 ans de Pokémon et aux premières générations de Kanto à Unova.</p>
-            <p>Utilise l'algorithme de sélection pour déterminer qui sera ton Pokémon préféré parmi 649 créatures ! 
-                Continue ensuite pour déterminer ton équipe idéale à travers un top 10 et révèle ton Hall of Fame à partir de 6 Pokémon choisis
+            <p>Ce projet est un hommage aux 30 ans de Pokémon et aux premières générations de Kanto à Unova.</p>
+            <p>Utilise l'algorithme de sélection pour déterminer qui sera ton pokémon préféré parmi les 900 créatures ! 
+                continue ensuite pour déterminer ton équipe idéale à travers un top 10 !
             </p>
             <hr class="pixel-hr">
             <p class="blink">PRÊT À RELEVER LE DÉFI ?</p>
         </div>
         <button class="btn start-btn" onclick="startGame()">COMMENCER</button>
+        <button class="btn resume-btn" id="resumeBtn" style="display:none;">▶ REPRENDRE</button>
     </div>
 </div>
                 <div class="header">
@@ -54,17 +55,17 @@
                             <div class="pokemon-grid" id="pokemonGrid"></div>
                             
                             <div class="controls">
-                                <button class="btn" id="pickBtn">VALIDER</button>
-                                <button class="btn" id="passBtn">PASSER</button>
-                                <button class="btn" id="undoBtn" disabled>REVENIR</button>
+                                <button class="btn" id="pickBtn">PICK</button>
+                                <button class="btn" id="passBtn">PASS</button>
+                                <button class="btn" id="undoBtn" disabled>UNDO</button>
                             </div>
                         </div>
                     </div>
 
                     <div class="favorites-section">
-                        <div class="favorites-title">★ MON EQUIPE ★</div>
+                        <div class="favorites-title">★ FAVORIS ★</div>
                         <ol class="favorites-list" id="favoritesList">
-                            <div class="empty-favorites">Aucun favori pour le moment...Sélectionnez autant de Pokémon que vous voulez dans un premier temps et allez jusqu'au bout de ce premier tour pour choisir votre combattant préféré, celui-ci apparaitra ici et les prochains autres suivront :) </div>
+                            <div class="empty-favorites">Aucun favori pour le moment...</div>
                         </ol>
                     </div>
                 </div>

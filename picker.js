@@ -11,7 +11,8 @@ let state = {
     current: [],
     survived: [],
     evaluating: [],
-    favorites: []
+    favorites: [],
+    everPicked: []   // IDs ayant été sélectionnés au moins une fois
 };
 let history = [];
 let selectedIds = new Set();
@@ -67,6 +68,20 @@ async function init() {
     try {
         await loadPokemonData();
         console.log(`${allPokemon.length} Pokémon chargés`);
+
+        const saved = loadProgress();
+        if (saved && saved.state && saved.state.favorites && saved.state.favorites.length > 0) {
+            // Affiche le bouton REPRENDRE sur l'intro
+            const resumeBtn = document.getElementById('resumeBtn');
+            if (resumeBtn) {
+                resumeBtn.style.display = 'inline-block';
+                const pct = Math.round(((allPokemon.length - saved.state.current.length - saved.state.survived.length - saved.state.evaluating.length) / allPokemon.length) * 100);
+                resumeBtn.textContent = `▶ REPRENDRE (${pct}%)`;
+                resumeBtn.addEventListener('click', () => resumeGame(saved.state));
+            }
+        }
+
+        // Démarre une nouvelle partie en standby (chargée mais pas affichée)
         state.current = allPokemon.map(p => p.id);
         shuffleArray(state.current);
         loadNextBatch();
@@ -80,6 +95,18 @@ async function init() {
             <div class="empty-message">ERREUR<br><br>Impossible de charger les données.<br><br>Vérifiez que ${DATA_SOURCE} existe.</div>
         `;
     }
+}
+
+function resumeGame(savedState) {
+    state = savedState;
+    selectedIds.clear();
+    displayBatch();
+    updateUI();
+    // Ferme l'intro
+    const intro = document.getElementById('introScreen');
+    intro.style.transition = 'opacity 0.5s ease';
+    intro.style.opacity = '0';
+    setTimeout(() => { intro.style.display = 'none'; }, 500);
 }
 
 async function loadPokemonData() {
@@ -99,7 +126,52 @@ async function loadPokemonData() {
     }
 }
 
-function shuffleArray(array) {
+// ============================================================
+// SAUVEGARDE LOCALE
+// ============================================================
+const SAVE_KEY = 'pokedex_save';
+
+function saveProgress() {
+    try {
+        localStorage.setItem(SAVE_KEY, JSON.stringify({
+            state,
+            timestamp: Date.now()
+        }));
+    } catch(e) { console.warn('Sauvegarde impossible', e); }
+}
+
+function loadProgress() {
+    try {
+        const raw = localStorage.getItem(SAVE_KEY);
+        if (!raw) return null;
+        return JSON.parse(raw);
+    } catch(e) { return null; }
+}
+
+function clearProgress() {
+    localStorage.removeItem(SAVE_KEY);
+}
+
+function confirmRestart() {
+    const overlay = document.createElement('div');
+    overlay.className = 'confirm-overlay';
+    overlay.innerHTML = `
+        <div class="confirm-box">
+            <div class="confirm-title">⚠ RECOMMENCER ?</div>
+            <div class="confirm-text">Toute ta progression sera perdue.<br>Es-tu sûr ?</div>
+            <div class="confirm-buttons">
+                <button class="btn confirm-yes" onclick="hardRestart()">OUI, RECOMMENCER</button>
+                <button class="btn confirm-no" onclick="this.closest('.confirm-overlay').remove()">ANNULER</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(overlay);
+}
+
+function hardRestart() {
+    clearProgress();
+    location.reload();
+}
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [array[i], array[j]] = [array[j], array[i]];
@@ -147,7 +219,13 @@ function loadNextBatch() {
             state.eliminated = state.eliminated.filter(elim => {
                 if (elim.eliminatedBy.includes(favoriteId)) {
                     elim.eliminatedBy = elim.eliminatedBy.filter(id => id !== favoriteId);
-                    if (elim.eliminatedBy.length === 0) { toRevive.push(elim.id); return false; }
+                    if (elim.eliminatedBy.length === 0) {
+                        // Ne ressuscite que si ce Pokémon a été choisi au moins une fois
+                        if (state.everPicked.includes(elim.id)) {
+                            toRevive.push(elim.id);
+                        }
+                        return false;
+                    }
                 }
                 return true;
             });
@@ -216,6 +294,12 @@ function pick() {
     soundPick();
     saveHistory();
     const picked = Array.from(selectedIds);
+
+    // Mémoriser tous les Pokémon jamais sélectionnés
+    picked.forEach(id => {
+        if (!state.everPicked.includes(id)) state.everPicked.push(id);
+    });
+
     const notPicked = state.evaluating.filter(id => !selectedIds.has(id));
     state.survived.push(...picked);
     notPicked.forEach(id => {
@@ -226,6 +310,7 @@ function pick() {
     state.evaluating = [];
     loadNextBatch();
     updateUI();
+    saveProgress();
 }
 
 function pass() {
@@ -235,6 +320,7 @@ function pass() {
     state.evaluating = [];
     loadNextBatch();
     updateUI();
+    saveProgress();
 }
 
 function saveHistory() {
@@ -249,6 +335,7 @@ function undo() {
     selectedIds.clear();
     displayBatch();
     updateUI();
+    saveProgress();
 }
 
 function updateUI() {
@@ -368,6 +455,7 @@ function showFavoriteCelebration(pokemon, rank) {
 // ============================================================
 function endGame() {
     // Mélodie de victoire
+    clearProgress();
     [392, 440, 494, 523, 587, 659, 784, 1047].forEach((note, i) => {
         setTimeout(() => playTone(note, 0.18, 'square', 0.15), i * 110);
     });
@@ -451,7 +539,7 @@ function endGame() {
                 </div>
             </div>
             ${benchSection}
-            <button class="btn hof-restart-btn" onclick="location.reload()">↺ RECOMMENCER</button>
+            <button class="btn hof-restart-btn" onclick="confirmRestart()">↺ RECOMMENCER</button>
         </div>
     `;
 }

@@ -1070,3 +1070,77 @@ body {
 .btn-early:hover:not(:disabled) {
     background: var(--gb-dark);
 }
+
+/* ============================================================
+   BOUTON REPRENDRE + CONFIRMATION RECOMMENCER
+   ============================================================ */
+
+.resume-btn {
+    background: var(--gb-accent);
+    box-shadow: 0 4px 0 var(--gb-mid);
+    margin-left: 10px;
+    animation: pulseEarly 2s ease-in-out infinite;
+}
+
+.resume-btn:hover {
+    background: var(--gb-mid);
+}
+
+/* Modale confirmation */
+.confirm-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 30, 10, 0.82);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.2s ease;
+}
+
+.confirm-box {
+    background: var(--gb-screen);
+    border: 3px solid var(--gb-dark);
+    border-radius: 10px;
+    padding: 28px 24px;
+    text-align: center;
+    max-width: 320px;
+    width: 90%;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+
+.confirm-title {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 13px;
+    color: #c0392b;
+    margin-bottom: 14px;
+    letter-spacing: 1px;
+}
+
+.confirm-text {
+    font-size: 16px;
+    color: var(--gb-mid);
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.confirm-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.confirm-yes {
+    background: #c0392b;
+    box-shadow: 0 4px 0 #7b241c;
+    color: #fff;
+}
+
+.confirm-yes:hover {
+    background: #a93226;
+}
+
+.confirm-no {
+    background: var(--gb-mid);
+    box-shadow: 0 4px 0 var(--gb-dark);
+}
