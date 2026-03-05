@@ -379,7 +379,8 @@ function endGame() {
     // Confettis
     let confettiHTML = '';
     const confColors = ['#ff8ec4','#ffec6e','#7ad4ff','#a8f07a','#ffffff','#ff6b6b','#c8a0ff'];
-    for (let i = 0; i < 35; i++) {
+    const confettiCount = isMobile ? 18 : 35;
+    for (let i = 0; i < confettiCount; i++) {
         const x = Math.random() * 100;
         const delay = Math.random() * 3;
         const dur = 2.5 + Math.random() * 2;
@@ -441,7 +442,7 @@ function endGame() {
     document.querySelector('.main-container').innerHTML = `
         <div class="hof-screen">
             <div class="hof-frame">
-                <div class="hof-arena">
+                <div class="hof-arena" style="${isMobile ? 'overflow:hidden;' : ''}">
                     ${confettiHTML}
                     ${teamHTML}
                 </div>

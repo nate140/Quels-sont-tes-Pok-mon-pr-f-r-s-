@@ -571,16 +571,43 @@ body {
     .favorites-section { max-height: none; }
     .favorites-list { grid-template-columns: repeat(5, 1fr); gap: 4px; }
 
-    /* Hall of Fame mobile — réduit à ~50% écran */
-    .hof-back-row .hof-member img  { width: 5.5vw; height: 5.5vw; }
-    .hof-front-row .hof-member img { width: 6.5vw; height: 6.5vw; }
-    .hof-team   { height: 15vw; }
-    .hof-arena  { min-height: 16vw; padding: 2px 0 0; }
+    /* Hall of Fame mobile — grid 3x2, abandon du positionnement absolu */
+    .hof-team {
+        height: auto !important;
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        grid-template-rows: repeat(2, 1fr) !important;
+        width: 100%;
+        gap: 0;
+        position: relative;
+    }
+
+    .hof-back-row, .hof-front-row {
+        display: contents;
+    }
+
+    .hof-back-row .hof-member,
+    .hof-front-row .hof-member {
+        position: static !important;
+        width: 100%;
+        display: flex !important;
+        justify-content: center;
+        align-items: flex-end;
+        padding: 4px;
+    }
+
+    .hof-back-row .hof-member img,
+    .hof-front-row .hof-member img {
+        width: 18vw !important;
+        height: 18vw !important;
+    }
+
+    .hof-arena  { min-height: auto !important; padding: 2px 0 2px; }
     .hof-bottom-bar { padding: 8px 12px; }
     .hof-bottom-bar p      { font-size: 13px; }
     .hof-bottom-bar p span { font-size: 7px; }
     .hof-bench-bar  { padding: 6px 10px; }
-    .hof-bench-member img  { width: 5vw; height: 5vw; }
+    .hof-bench-member img  { width: 10vw !important; height: 10vw !important; }
     .hof-frame  { width: 100%; max-width: 100%; overflow: hidden; }
     .hof-screen { width: 100%; max-width: 100%; overflow: hidden; }
 }
