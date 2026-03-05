@@ -108,13 +108,15 @@ body {
     animation: slideUp 0.4s ease-out;
 }
 
-/* GRILLE FIXE — 5 colonnes, jamais de resize */
+/* GRILLE FIXE — 5 colonnes desktop */
 .pokemon-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     gap: 10px;
     margin: 16px 0;
     min-height: 180px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .pokemon-card {
@@ -130,6 +132,8 @@ body {
     align-items: center;
     justify-content: center;
     aspect-ratio: 1;
+    min-width: 0;     /* empêche le débordement dans une grille */
+    overflow: hidden;
 }
 
 .pokemon-card:hover {
@@ -460,6 +464,7 @@ body {
         padding: 0;
         align-items: flex-start;
         background: var(--gb-screen);
+        overflow-x: hidden;
     }
 
     /* Supprime la coque décorative sur mobile */
@@ -502,13 +507,18 @@ body {
     .stat-line  { font-size: 9px; }
     .progress-section { padding: 8px; margin: 8px 0; }
 
-    /* Grille : 4 colonnes strictes, aucun débordement possible */
+    /* Grille : 4 colonnes strictes */
     .pokemon-grid {
         grid-template-columns: repeat(4, 1fr) !important;
-        gap: 6px;
+        gap: 6px !important;
         margin: 10px 0;
-        overflow: hidden;
         width: 100%;
+        max-width: 100%;
+    }
+
+    .pokemon-card {
+        min-width: 0;
+        max-width: 100%;
     }
 
     /* Les images s'adaptent à la taille réelle de la carte */
