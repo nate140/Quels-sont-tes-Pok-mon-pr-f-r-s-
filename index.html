@@ -4,6 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quels sont tes Pokémon préférés ? Crée ton équipe !</title>
+
+    <!-- Aperçu lien (WhatsApp, iMessage, Twitter...) -->
+    <meta property="og:title"       content="Quels sont tes Pokémon préférés ? Crée ton équipe !">
+    <meta property="og:description" content="Choisis tes Pokémon favoris parmi 649 créatures et révèle ton Hall of Fame !">
+    <meta property="og:image"       content="https://nate140.github.io/preview.png">
+    <meta property="og:url"         content="https://nate140.github.io">
+    <meta property="og:type"        content="website">
+    <meta name="twitter:card"       content="summary_large_image">
+    <meta name="twitter:title"      content="Quels sont tes Pokémon préférés ? Crée ton équipe !">
+    <meta name="twitter:description" content="Choisis tes Pokémon favoris parmi 649 créatures et révèle ton Hall of Fame !">
+    <meta name="twitter:image"      content="https://nate140.github.io/preview.png">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -16,14 +27,14 @@
                     <div class="intro-content">
                         <div class="intro-trainer-wrap">
                             <img src="./nate.png" alt="Nate" class="intro-trainer">
-                            <div class="intro-trainer-name">NATE</div>
+                            <div class="intro-trainer-name">DRESSEUR NATE</div>
                         </div>
                         <h2 class="pixel-title">BIENVENUE JEUNE DRESSEUR !</h2>
                         <div class="intro-text">
                             <p>Ce mini-jeu est un hommage aux 30 ans de Pokémon et aux premières générations de Kanto à Unova.</p>
                             <p>Utilise l'algorithme de sélection pour déterminer qui sera ton Pokémon préféré parmi les 649 créatures ! Continue ensuite pour déterminer ton équipe idéale à travers un top 12 et révèle ton Hall of Fame à partir de 6 Pokémon choisis.</p>
                             <hr class="pixel-hr">
-                            <p class="blink">PRÊT POUR DE CRUCIAUX DILEMMES ?</p>
+                            <p class="blink">PRÊT À RELEVER LE DÉFI ?</p>
                         </div>
                         <div class="intro-buttons">
                             <button class="btn start-btn" onclick="startGame()">COMMENCER</button>
@@ -55,7 +66,7 @@
                         </div>
 
                         <div id="pickerSection">
-                            <div id="hintText" class="hint-text">👇 Choisis un ou plusieurs Pokémon puis clique sur <strong>CHOISIR</strong> ou sur <strong>PASSER</strong> pour voir la sélection suivante. Ton Pokémon préféré apparaîtra dans <strong>MON EQUIPE</strong> dès que tu l'auras élu parmi ta première sélection et ainsi de suite pour les autres. Bon courage! </div>
+                            <div id="hintText" class="hint-text">👆 Choisis un ou plusieurs Pokémon puis clique sur <strong>CHOISIR</strong>, ou clique sur <strong>PASSER</strong> pour voir la sélection suivante.</div>
                             <div class="pokemon-grid" id="pokemonGrid"></div>
                             <div class="controls">
                                 <button class="btn" id="pickBtn">CHOISIR</button>
