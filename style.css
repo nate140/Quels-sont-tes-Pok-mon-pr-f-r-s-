@@ -540,14 +540,16 @@ body {
     .favorites-section { max-height: none; }
     .favorites-list { grid-template-columns: repeat(5, 1fr); gap: 4px; }
 
-    /* Hall of Fame mobile — sprites réduits pour voir les 6 */
-    .hof-back-row .hof-member img  { width: 62px;  height: 62px; }
-    .hof-front-row .hof-member img { width: 76px; height: 76px; }
-    .hof-team   { height: 145px; }
-    .hof-arena  { min-height: 155px; padding: 6px 0 0; }
+    /* Hall of Fame mobile — tailles en % pour s'adapter à tout iPhone */
+    .hof-back-row .hof-member img  { width: 16vw; height: 16vw; }
+    .hof-front-row .hof-member img { width: 20vw; height: 20vw; }
+    .hof-team   { height: 42vw; }
+    .hof-arena  { min-height: 44vw; padding: 4px 0 0; }
     .hof-bottom-bar p      { font-size: 18px; }
     .hof-bottom-bar p span { font-size: 10px; }
-    .hof-bench-member img  { width: 40px; height: 40px; }
+    .hof-bench-member img  { width: 11vw; height: 11vw; }
+    .hof-frame  { width: 100%; max-width: 100%; overflow: hidden; }
+    .hof-screen { width: 100%; max-width: 100%; overflow: hidden; }
 }
 
 /* ============================================================
