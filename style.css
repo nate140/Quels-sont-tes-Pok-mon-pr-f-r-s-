@@ -567,7 +567,40 @@ body {
     .btn { padding: 8px 12px; font-size: 8px; }
     .controls { gap: 6px; margin: 10px 0; }
 
-    /* Favoris : 5 colonnes sur mobile */
+    /* Intro page — tout tenir sur un écran sans scroll */
+    .intro-overlay {
+        position: relative;
+        justify-content: flex-start;
+        padding: 16px 16px 12px;
+        min-height: 100svh;
+    }
+
+    .intro-trainer { height: 100px; }
+    .intro-trainer-wrap { margin-bottom: 8px; }
+    .intro-trainer-name { font-size: 7px; padding: 4px 8px; }
+
+    .pixel-title {
+        font-size: 12px;
+        margin-bottom: 10px;
+        letter-spacing: 1px;
+    }
+
+    .intro-text {
+        font-size: 14px;
+        line-height: 1.4;
+        margin-bottom: 12px;
+    }
+
+    .intro-text p { margin-bottom: 6px; }
+    .pixel-hr { margin: 8px 0; }
+
+    .blink { font-size: 10px; }
+
+    .start-btn {
+        padding: 10px 20px !important;
+        font-size: 11px !important;
+        margin-top: 8px;
+    }
     .favorites-section { max-height: none; }
     .favorites-list { grid-template-columns: repeat(5, 1fr); gap: 4px; }
 
