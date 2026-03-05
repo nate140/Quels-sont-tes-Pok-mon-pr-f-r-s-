@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Quels sont tes Pokémon préférés ? Crée ton équipe !</title>
+    <title>Quels sont tes Pokémon préférés ? Crée ton équipe !</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -11,25 +11,27 @@
     <div class="gameboy-shell">
         <div class="screen-bezel">
             <div class="screen">
+
                 <div id="introScreen" class="intro-overlay">
-    <div class="intro-content">
-        <div class="intro-trainer-wrap">
-            <img src="./nate.png" alt="Nate" class="intro-trainer">
-            <div class="intro-trainer-name">NATE</div>
-        </div>
-        <h2 class="pixel-title">BIENVENUE JEUNE DRESSEUR</h2>
-        <div class="intro-text">
-            <p>Ce mini-jeu est un hommage aux 30 ans de Pokémon et aux premières générations de Kanto à Unova.</p>
-            <p>Utilise l'algorithme de sélection pour déterminer qui sera ton pokémon préféré parmi les 649 créatures ! 
-                Continue ensuite pour créer ton équipe idéale à travers un top 12, ou arrête toi à tout moment à partir du 6ème favori pour découvrir tes résultats !
-            </p>
-            <hr class="pixel-hr">
-            <p class="blink">PRÊT POUR DE CRUCIAUX DILEMMES ?</p>
-        </div>
-        <button class="btn start-btn" onclick="startGame()">COMMENCER</button>
-        <button class="btn resume-btn" id="resumeBtn" style="display:none;">▶ REPRENDRE</button>
-    </div>
-</div>
+                    <div class="intro-content">
+                        <div class="intro-trainer-wrap">
+                            <img src="./nate.png" alt="Nate" class="intro-trainer">
+                            <div class="intro-trainer-name">DRESSEUR NATE</div>
+                        </div>
+                        <h2 class="pixel-title">BIENVENUE JEUNE DRESSEUR !</h2>
+                        <div class="intro-text">
+                            <p>Ce mini-jeu est un hommage aux 30 ans de Pokémon et aux premières générations de Kanto à Unova.</p>
+                            <p>Utilise l'algorithme de sélection pour déterminer qui sera ton Pokémon préféré parmi les 649 créatures ! Continue ensuite pour déterminer ton équipe idéale à travers un top 12 et révèle ton Hall of Fame à partir de 6 Pokémon choisis.</p>
+                            <hr class="pixel-hr">
+                            <p class="blink">PRÊT À RELEVER LE DÉFI ?</p>
+                        </div>
+                        <div class="intro-buttons">
+                            <button class="btn start-btn" onclick="startGame()">COMMENCER</button>
+                            <button class="btn resume-btn" id="resumeBtn" style="display:none;">▶ REPRENDRE</button>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="header">
                     <h1>POKEDEX</h1>
                     <p>Choisis tes Pokémon préférés!</p>
@@ -53,9 +55,8 @@
 
                         <div id="pickerSection">
                             <div class="pokemon-grid" id="pokemonGrid"></div>
-                            
                             <div class="controls">
-                                <button class="btn" id="pickBtn">VALIDER</button>
+                                <button class="btn" id="pickBtn">CHOISIR</button>
                                 <button class="btn" id="passBtn">PASSER</button>
                                 <button class="btn" id="undoBtn" disabled>REVENIR</button>
                             </div>
@@ -63,12 +64,13 @@
                     </div>
 
                     <div class="favorites-section">
-                        <div class="favorites-title">★ MON EQUIPE ★</div>
+                        <div class="favorites-title">★ MON ÉQUIPE ★</div>
                         <ol class="favorites-list" id="favoritesList">
-                            <div class="empty-favorites">Aucun favori pour le moment...Tes Pokémon préférés apparaîtront ici dès que tu auras choisi ton 1er, puis ton 2ème, ton 3ème et ainsi de suite :) </div>
+                            <div class="empty-favorites">Ton équipe<br>apparaîtra ici...</div>
                         </ol>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>

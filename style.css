@@ -1144,3 +1144,18 @@ body {
     background: var(--gb-mid);
     box-shadow: 0 4px 0 var(--gb-dark);
 }
+
+.intro-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.intro-buttons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 10px;
+}
