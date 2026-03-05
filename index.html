@@ -13,11 +13,15 @@
             <div class="screen">
                 <div id="introScreen" class="intro-overlay">
     <div class="intro-content">
-        <h2 class="pixel-title">BIENVENUE JEUNE DRESSEUR</h2>
+        <div class="intro-trainer-wrap">
+            <img src="./nate.png" alt="Nate" class="intro-trainer">
+            <div class="intro-trainer-name">DRESSEUR NATE</div>
+        </div>
+        <h2 class="pixel-title">BIENVENUE</h2>
         <div class="intro-text">
-            <p>Ce projet est un hommage aux 30 ans de Pokémon et aux 6 premières générations de Kanto à Unova.</p>
+            <p>Ce projet est un hommage aux 30 ans de Pokémon et aux premières générations de Kanto à Unova.</p>
             <p>Utilise l'algorithme de sélection pour déterminer qui sera ton pokémon préféré parmi les 900 créatures ! 
-                continue ensuite pour déterminer ton équipe idéale à travers un top 10 ou arrête toi à partir de 6 Pokémon pour révéler ton Hall of Fame !
+                continue ensuite pour déterminer ton équipe idéale à travers un top 10 !
             </p>
             <hr class="pixel-hr">
             <p class="blink">PRÊT À RELEVER LE DÉFI ?</p>
@@ -50,15 +54,15 @@
                             <div class="pokemon-grid" id="pokemonGrid"></div>
                             
                             <div class="controls">
-                                <button class="btn" id="pickBtn">VALIDER</button>
-                                <button class="btn" id="passBtn">PASSER</button>
-                                <button class="btn" id="undoBtn" disabled>REVENIR</button>
+                                <button class="btn" id="pickBtn">PICK</button>
+                                <button class="btn" id="passBtn">PASS</button>
+                                <button class="btn" id="undoBtn" disabled>UNDO</button>
                             </div>
                         </div>
                     </div>
 
                     <div class="favorites-section">
-                        <div class="favorites-title">★ MON EQUIPE ★</div>
+                        <div class="favorites-title">★ FAVORIS ★</div>
                         <ol class="favorites-list" id="favoritesList">
                             <div class="empty-favorites">Aucun favori pour le moment...</div>
                         </ol>

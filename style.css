@@ -414,7 +414,38 @@ body {
     text-align: center;
 }
 
-.intro-content { animation: fadeIn 0.8s ease-out; }
+.intro-trainer-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto 12px;
+    animation: trainerSlideIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.intro-trainer {
+    display: block;
+    height: 160px;
+    width: auto;
+    image-rendering: pixelated;
+}
+
+.intro-trainer-name {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 9px;
+    color: var(--gb-screen);
+    background: var(--gb-dark);
+    border: 2px solid var(--gb-accent);
+    border-radius: 4px;
+    padding: 5px 10px;
+    margin-top: -4px;
+    letter-spacing: 1px;
+    white-space: nowrap;
+}
+
+@keyframes trainerSlideIn {
+    from { transform: translateX(-120px); opacity: 0; }
+    to   { transform: translateX(0);      opacity: 1; }
+}
 
 .pixel-title {
     font-family: 'Press Start 2P', cursive;
