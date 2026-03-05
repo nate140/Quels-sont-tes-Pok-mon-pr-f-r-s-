@@ -571,14 +571,16 @@ body {
     .favorites-section { max-height: none; }
     .favorites-list { grid-template-columns: repeat(5, 1fr); gap: 4px; }
 
-    /* Hall of Fame mobile — 6 Pokémon visibles garantis */
-    .hof-back-row .hof-member img  { width: 13vw; height: 13vw; }
-    .hof-front-row .hof-member img { width: 16vw; height: 16vw; }
-    .hof-team   { height: 36vw; }
-    .hof-arena  { min-height: 38vw; padding: 4px 0 0; }
-    .hof-bottom-bar p      { font-size: 16px; }
-    .hof-bottom-bar p span { font-size: 9px; }
-    .hof-bench-member img  { width: 11vw; height: 11vw; }
+    /* Hall of Fame mobile — réduit à ~50% écran */
+    .hof-back-row .hof-member img  { width: 9vw;  height: 9vw; }
+    .hof-front-row .hof-member img { width: 11vw; height: 11vw; }
+    .hof-team   { height: 25vw; }
+    .hof-arena  { min-height: 27vw; padding: 2px 0 0; }
+    .hof-bottom-bar { padding: 8px 12px; }
+    .hof-bottom-bar p      { font-size: 13px; }
+    .hof-bottom-bar p span { font-size: 7px; }
+    .hof-bench-bar  { padding: 6px 10px; }
+    .hof-bench-member img  { width: 8vw; height: 8vw; }
     .hof-frame  { width: 100%; max-width: 100%; overflow: hidden; }
     .hof-screen { width: 100%; max-width: 100%; overflow: hidden; }
 }
